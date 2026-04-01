@@ -1,5 +1,9 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, Float, ForeignKey
 from sqlalchemy.orm import declarative_base
+from sqlalchemy_utils.types import ChoiceType
+
+# O alembic serve para fazer uma migração do um banco de dados de uma maneira segura
+
 
 # Cria a conexão do banco de dados
 db = create_engine('sqlite:///banco.db')
@@ -8,6 +12,8 @@ db = create_engine('sqlite:///banco.db')
 Base = declarative_base()
 
 # Criar as classes/tabelas do Banco
+
+# Usuários
 class Usuario(Base):
     __tablename__ = "usuarios"
 
@@ -30,13 +36,42 @@ class Usuario(Base):
 class Pedido(Base):
     __tablename__ = "pedidos"
 
+    #STATUS_PEDIDOS = (
+     #   ("PENDENTE", "PENDENTE"),
+     #   ("CANCELADO", "CANCELADO"),
+     #   ("FINALIZADO", "FINALIZADO")
+    #)
+
     id = Column("id",Integer, primary_key=True, autoincrement=True)
-    status = Column("status",String)
-    usuario = Column("usuario",ForeignKey("usuarios.nome"),nullable=False)
-    preco = Column("preco",Float, nullable=False)
-    itens = Column("itens",String, nullable=False)
+    status = Column("status",String) # pedente, cancelado, finalizado
+    usuario = Column("usuario",ForeignKey("usuarios.id"))
+    preco = Column("preco",Float)
+    itens = Column("itens",String)
+
+    def __init__(self, usuario, status="PENDENTE", preco=0):
+        self.usuario = usuario
+        self.status = status
+        self.preco = preco
+
 
 # ItensPedido
+class ItensPedido(Base):
+    __tablename__ = "itens_pedidos"
+
+    id = Column("id",Integer, primary_key=True, autoincrement=True)
+    quantidade = Column("quantidade",Integer)
+    sabor = Column("sabor",String)
+    tamanho = Column("tamanho",Integer)
+    preco_unitario = Column("preco_unitario",Float)
+    pedido = Column("pedido",ForeignKey("pedidos.id"))
+
+    def __init__(self, quantidade, sabor, tamanho, preco_unitario, pedido):
+        self.quantidade = quantidade
+        self.sabor = sabor
+        self.tamanho = tamanho
+        self.preco_unitario = preco_unitario
+        self.pedido = pedido
+
 
 # Executa a criação dos metadados do seu banco
 

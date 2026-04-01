@@ -4,11 +4,13 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.14"
 dependencies = [
+    "alembic>=1.18.4",
     "fastapi>=0.135.2",
     "passlib[bcrypt]>=1.7.4",
     "python-dotenv>=1.2.2",
     "python-jose[crypography]>=3.5.0",
     "python-multipart>=0.0.22",
     "sqlalchemy>=2.0.48",
+    "sqlalchemy-utils>=0.42.1",
     "uvicorn>=0.42.0",
 ]

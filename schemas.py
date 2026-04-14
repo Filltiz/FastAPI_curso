@@ -10,4 +10,17 @@ class UsuarioSchema(BaseModel):
     admin: Optional[bool]
 
     class Config:
-        from_pydantic_model = True
+        from_atributes = True
+
+class PedidoSchema(BaseModel):
+    id_usuario: int
+
+    class Config:
+        from_atributes = True
+
+class LoginSchema(BaseModel):
+    email: str
+    senha: str
+
+    class Config:
+        from_atributes = True

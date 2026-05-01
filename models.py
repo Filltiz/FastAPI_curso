@@ -72,6 +72,4 @@ class ItensPedido(Base):
         self.preco_unitario = preco_unitario
         self.pedido = pedido
 
-
 # Executa a criação dos metadados do seu banco
-

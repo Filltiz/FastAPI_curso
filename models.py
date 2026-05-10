@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, Float, ForeignKey
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy_utils.types import ChoiceType
 
 # O alembic serve para fazer uma migração do um banco de dados de uma maneira segura
@@ -46,12 +46,18 @@ class Pedido(Base):
     status = Column("status",String) # pedente, cancelado, finalizado
     usuario = Column("usuario",ForeignKey("usuarios.id"))
     preco = Column("preco",Float)
-    itens = Column("itens",String)
+    itens = relationship("ItensPedido", cascade="all, delete")
 
     def __init__(self, usuario, status="PENDENTE", preco=0):
         self.usuario = usuario
-        self.status = status
         self.preco = preco
+        self.status = status
+
+    def calcular_preco(self):
+        # Percorrer todos os itens do pedido
+        # Somar todos os preços todos os itens dos pedidos
+        # Editar no campo "preco" o valor final do preço do pedido
+        self.preco = sum(item.preco_unitario * item.quantidade for item in self.itens)
 
 
 # ItensPedido
@@ -61,7 +67,7 @@ class ItensPedido(Base):
     id = Column("id",Integer, primary_key=True, autoincrement=True)
     quantidade = Column("quantidade",Integer)
     sabor = Column("sabor",String)
-    tamanho = Column("tamanho",Integer)
+    tamanho = Column("tamanho",String)
     preco_unitario = Column("preco_unitario",Float)
     pedido = Column("pedido",ForeignKey("pedidos.id"))
 
@@ -73,3 +79,7 @@ class ItensPedido(Base):
         self.pedido = pedido
 
 # Executa a criação dos metadados do seu banco
+
+# Migrar o banco de dodos
+# Criar a migração: alembic revision --autogenerate -m "mensagem"
+# Executar a migração: alembic upgrade head

@@ -33,7 +33,6 @@ def autenticar_token(email, senha, session):
 async def home():
     """
     Essa é a rota padrão de autenticação do nosso sistema
-
     """
     return {"mensagem": "Você acessou a rota padrão de autenticação", "autenticado": False}
 
@@ -78,7 +77,6 @@ async def login_form(dados_formulario: OAuth2PasswordRequestForm = Depends(), se
             "access_token": access_token,
             "token_type": "bearer"
         }
-
 
 
 @auth_router.get("/refresh")

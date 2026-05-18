@@ -3,7 +3,9 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy_utils.types import ChoiceType
 
 # O alembic serve para fazer uma migração do um banco de dados de uma maneira segura
-
+# Migrar o banco de dodos
+# Criar a migração: alembic revision --autogenerate -m "mensagem"
+# Executar a migração: alembic upgrade head
 
 # Cria a conexão do banco de dados
 db = create_engine('sqlite:///banco.db')
@@ -80,6 +82,3 @@ class ItensPedido(Base):
 
 # Executa a criação dos metadados do seu banco
 
-# Migrar o banco de dodos
-# Criar a migração: alembic revision --autogenerate -m "mensagem"
-# Executar a migração: alembic upgrade head

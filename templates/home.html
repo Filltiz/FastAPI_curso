@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaMaster - A Melhor Pizza da Cidade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ========== RESET & VARIABLES ========== */
+        :root {
+            --primary: #D62626;
+            --primary-dark: #B51D1D;
+            --secondary: #F4A307;
+            --dark: #1A1A1A;
+            --cream: #FFF8ED;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 26, 26, 1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .nav-logo .logo-icon {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: white !important;
+            padding: 0.5rem 1.2rem !important;
+            border-radius: 50px;
+            transition: all 0.3s ease !important;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-dark) !important;
+        }
+
+        .nav-btn::after {
+            display: none !important;
+        }
+
+        .mobile-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 50%, #444 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%253Fxml%20version='1.0'") no-repeat;
+            opacity: 0.05;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            color: var(--secondary);
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .hero-text p {
+            color: #B0B0B0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(214, 38, 38, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border: 2px solid #B0B0B0;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pizza-display {
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #F4A307 0%, #D62626 40%, #1A1A1A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            color: #B0B0B0;
+            font-size: 0.85rem;
+        }
+
+        /* ========== FEATURES BAR ========== */
+        .features-bar {
+            background: var(--primary);
+            padding: 1.5rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 1400px;
+            margin: -2rem auto 0;
+            border-radius: 16px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 1rem;
+            color: white;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .feature-desc {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* ========== MENU SECTION ========== */
+        .menu-section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid #E5E5E5;
+            background: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pizza-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pizza-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .pizza-card-img {
+            height: 220px;
+            background: linear-gradient(135deg, #F9D7B0, #E8C4A0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            position: relative;
+        }
+
+        .pizza-card-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pizza-card-body {
+            padding: 1.5rem;
+        }
+
+        .pizza-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .pizza-card-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .pizza-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pizza-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .add-btn {
+            background: var(--dark);
+            color: white;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* ========== SPECIALS SECTION ========== */
+        .specials-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #FFF8ED, #F9E8D0);
+        }
+
+        .specials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .specials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .special-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .special-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .special-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .special-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .special-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .special-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ========== ABOUT SECTION ========== */
+        .about-section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            background: linear-gradient(135deg, #F9D7B0, #E8C4A0);
+            border-radius: 20px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-item {
+            padding: 1rem;
+            background: var(--cream);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .highlight-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .highlight-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials-section {
+            padding: 6rem 2rem;
+            background: var(--dark);
+            color: white;
+        }
+
+        .testimonials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: #2D2D2D;
+            padding: 2rem;
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .testimonial-stars {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .testimonial-text {
+            color: #B0B0B0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+        }
+
+        .testimonial-role {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* ========== CTA SECTION ========== */
+        .cta-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            text-align: center;
+            color: white;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .cta-input {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            flex: 1;
+            outline: none;
+        }
+
+        .cta-submit {
+            background: var(--dark);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cta-submit:hover {
+            background: var(--secondary);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: #111;
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: #B0B0B0;
+            line-height: 1.6;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #B0B0B0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: #2D2D2D;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid #2D2D2D;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        /* ========== CART BADGE ========== */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ========== SCROLL ANIMATIONS ========== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 968px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .pizza-display {
+                width: 300px;
+                height: 300px;
+                font-size: 6rem;
+            }
+
+            .features-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .specials-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .features-bar {
+                grid-template-columns: 1fr;
+                margin: -2rem 0 0;
+                border-radius: 0;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .cta-form {
+                flex-direction: column;
+            }
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* ========== LOADING ANIMATION ========== */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-pizza {
+            font-size: 4rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-pizza">🍕</div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <span class="logo-icon">🍕</span>
+            <span>PizzaMaster</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#about">Sobre</a></li>
+            <li><a href="#testimonials">Depoimentos</a></li>
+            <li><a href="javascript:void(0)" onclick="openCart()" class="nav-btn">🛒 Carrinho <span id="cart-count-nav">0</span></a></li>
+            <li id="nav-auth-container">
+                <a href="/login" class="nav-btn" style="background: var(--secondary) !important; color: var(--dark) !important;">Entrar</a>
+            </li>
+        </ul>
+
+        <div class="mobile-toggle" onclick="toggleMobileMenu()">☰</div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-text">
+                <div class="hero-badge">🔥 Promoção de Abertura!</div>
+                <h1>A Melhor Pizza<br><span>da Cidade</span></h1>
+                <p>Ingredientes frescos, massa artesanal e o sabor que só a PizzaMaster pode oferecer. Peça agora e receba em minutos!</p>
+
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn-primary">🛒 Fazer Pedido</a>
+                    <a href="#about" class="btn-secondary">Saiba Mais →</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Pizzas Vendidas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4.9⭐</div>
+                        <div class="stat-label">Avaliação</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15min</div>
+                        <div class="stat-label">Entrega Média</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="pizza-display">🍕</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES BAR -->
+    <div class="features-bar">
+        <div class="feature-item">
+            <div class="feature-icon">🔥</div>
+            <div class="feature-title">Forno a Lenha</div>
+            <div class="feature-desc">Cozida na temperatura perfeita</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🌿</div>
+            <div class="feature-title">100% Fresco</div>
+            <div class="feature-desc">Ingredientes selecionados</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">🚀</div>
+                        <div class="feature-title">Entrega Rápida</div>
+            <div class="feature-desc">Em até 15 minutos</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">💰</div>
+            <div class="feature-title">Melhor Preço</div>
+            <div class="feature-desc">Promoção toda semana</div>
+        </div>
+    </div>
+
+    <!-- MENU SECTION -->
+    <section class="menu-section" id="menu">
+        <div class="section-header fade-in">
+            <h2>🍕 Nosso Menu</h2>
+            <p>Escolha sua pizza favorita e faça seu pedido!</p>
+        </div>
+
+        <div class="menu-categories">
+            <button class="category-btn active" data-category="all">Todas</button>
+            <button class="category-btn" data-category="classicas">Clássicas</button>
+            <button class="category-btn" data-category="especiais">Especiais</button>
+            <button class="category-btn" data-category="fit">Fit</button>
+        </div>
+
+        <div class="menu-grid">
+            <!-- Pizza 1 -->
+            <div class="pizza-card fade-in" data-category="classicas">
+                <div class="pizza-card-img">🍕</div>
+                <span class="pizza-card-badge">Mais Vendida</span>
+                <div class="pizza-card-body">
+                    <h3 class="pizza-card-title">Margherita</h3>
+                    <p class="pizza-card-desc">Molho de tomate, mozzarella fresca e alface com orégano.</p>
+                    <div class="pizza-card-footer">
+                        <span class="pizza-price">R$ 39,90</span>
+                        <button class="add-btn" onclick="addToCart('Margherita', 39.90)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pizza 2 -->
+            <div class="pizza-card fade-in" data-category="classicas">
+                <div class="pizza-card-img">🧀</div>
+                <span class="pizza-card-badge">Popular</span>
+                <div class="pizza-card-body">
+                    <h3 class="pizza-card-title">Calabresa</h3>
+                    <p class="pizza-card-desc">Calabresa fatiada, mozzarella e cebola roxa.</p>
+                    <div class="pizza-card-footer">
+                        <span class="pizza-price">R$ 42,90</span>
+                        <button class="add-btn" onclick="addToCart('Calabresa', 42.90)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pizza 3 -->
+            <div class="pizza-card fade-in" data-category="especiais">
+                <div class="pizza-card-img">🌶️</div>
+                <span class="pizza-card-badge">Picante</span>
+                <div class="pizza-card-body">
+                    <h3 class="pizza-card-title">Pepperoni</h3>
+                    <p class="pizza-card-desc">Pepperoni artesanal, mozzarella e pimentões.</p>
+                    <div class="pizza-card-footer">
+                        <span class="pizza-price">R$ 49,90</span>
+                        <button class="add-btn" onclick="addToCart('Pepperoni', 49.90)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pizza 4 -->
+            <div class="pizza-card fade-in" data-category="especiais">
+                <div class="pizza-card-img">🍄</div>
+                <span class="pizza-card-badge">Nova</span>
+                <div class="pizza-card-body">
+                    <h3 class="pizza-card-title">4 Queijos</h3>
+                    <p class="pizza-card-desc">Mozzarella, parmesão, gorgonzola e provolone.</p>
+                    <div class="pizza-card-footer">
+                        <span class="pizza-price">R$ 52,90</span>
+                        <button class="add-btn" onclick="addToCart('4 Queijos', 52.90)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pizza 5 -->
+            <div class="pizza-card fade-in" data-category="fit">
+                <div class="pizza-card-img">🥑</div>
+                <span class="pizza-card-badge">Fit</span>
+                <div class="pizza-card-body">
+                    <h3 class="pizza-card-title">Veggie Supreme</h3>
+                    <p class="pizza-card-desc">Abacate, tomate seco, cogumelos e rúcula.</p>
+                    <div class="pizza-card-footer">
+                        <span class="pizza-price">R$ 46,90</span>
+                        <button class="add-btn" onclick="addToCart('Veggie Supreme', 46.90)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pizza 6 -->
+            <div class="pizza-card fade-in" data-category="especiais">
+                <div class="pizza-card-img">🥩</div>
+                <span class="pizza-card-badge">Premium</span>
+                <div class="pizza-card-body">
+                    <h3 class="pizza-card-title">Suprema Especial</h3>
+                    <p class="pizza-card-desc">Bacon, frango, mozzarella e molho barbecue.</p>
+                    <div class="pizza-card-footer">
+                        <span class="pizza-price">R$ 54,90</span>
+                        <button class="add-btn" onclick="addToCart('Suprema Especial', 54.90)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPECIALS SECTION -->
+    <section class="specials-section">
+        <div class="specials-container">
+            <div class="section-header fade-in">
+                <h2>🎯 Por que escolher a PizzaMaster?</h2>
+                <p>Somos mais do que pizza — somos uma experiência!</p>
+            </div>
+
+            <div class="specials-grid">
+                <div class="special-card fade-in">
+                    <div class="special-icon">🏆</div>
+                    <h3 class="special-title">Prêmio de Qualidade</h3>
+                    <p class="special-desc">Reconhecida como a melhor pizzaria da região por 5 anos consecutivos.</p>
+                </div>
+                <div class="special-card fade-in">
+                    <div class="special-icon">👨‍🍳</div>
+                    <h3 class="special-title">Chefs Especializados</h3>
+                    <p class="special-desc">Nossos pizzaiolos são treinados por meses para criar o sabor perfeito.</p>
+                </div>
+                <div class="special-card fade-in">
+                    <div class="special-icon">📦</div>
+                    <h3 class="special-title">Entrega Garantida</h3>
+                    <p class="special-desc">Se a pizza chegar fria, devolvemos seu dinheiro. É nossa garantia!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about-section" id="about">
+        <div class="about-grid">
+            <div class="about-image fade-in">👨‍🍳</div>
+            <div class="about-text fade-in">
+                <h2>Nossa História 📖</h2>
+                <p>A PizzaMaster nasceu em 2018 com o sonho de levar a melhor pizza artesanal para toda a cidade. Começamos com um pequeno forno e uma grande paixão.</p>
+                <p>Hoje, somos referência em qualidade e sabor, mantendo sempre a mesma dedicação do primeiro dia. Cada pizza é feita com amor e os melhores ingredientes.</p>
+
+                <div class="about-highlights">
+                    <div class="highlight-item">
+                        <div class="highlight-number">50+</div>
+                        <div class="highlight-label">Pizzas por Dia</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-number">2.000+</div>
+                        <div class="highlight-label">Clientes Satisfeitos</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-number">15</div>
+                        <div class="highlight-label">Variedades de Pizzas</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-number">4.9⭐</div>
+                        <div class="highlight-label">Avaliação Média</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="testimonials-container">
+            <div class="section-header fade-in">
+                <h2 style="color: white;">O que nossos clientes dizem</h2>
+                <p style="color: #B0B0B0;">A opinião de quem já provou nosso sabor!</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Melhor pizza que já comi na vida! A massa é perfeita e o queijo derretendo é uma obra de arte."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">M</div>
+                        <div>
+                            <div class="testimonial-name">Maria Silva</div>
+                            <div class="testimonial-role">Cliente desde 2023</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Peço toda semana para o jantar! A entrega é super rápida e a pizza chega quentinha. Recomendo demais!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">J</div>
+                        <div>
+                            <div class="testimonial-name">João Santos</div>
+                            <div class="testimonial-role">Cliente desde 2024</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"A pizza de 4 queijos é divina! Nunca vi uma pizzaria com ingredientes tão frescos e saborosos."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">A</div>
+                        <div>
+                            <div class="testimonial-name">Ana Costa</div>
+                            <div class="testimonial-role">Cliente desde 2023</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <div class="cta-container fade-in">
+            <h2>Fale Conosco! 📞</h0>
+            <p>Quer fazer um pedido ou tem alguma dúvida? Entre em contato!</p>
+
+            <div style="margin-top: 2rem;">
+                <a href="tel:+5511999999999" class="btn-primary" style="display: inline-block; margin-right: 1rem;">📞 Ligar Agora</a>
+                <a href="https://wa.me/5511999999999" class="btn-secondary" style="border-color: white; color: white;">💬 WhatsApp</a>
+            </div>
+
+            <p style="margin-top: 2rem; font-size: 0.9rem;">📍 Rua da Pizza, 123 - Centro, São Paulo<br>🕐 Segunda a Domingo - 18h às 23h</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>🍕 PizzaMaster</h3>
+                <p>A melhor pizza artesanal da cidade. Feita com amor e entregue com carinho.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link">📘</a>
+                    <a href="#" class="social-link">📸</a>
+                    <a href="#" class="social-link">🐦</a>
+                    <a href="#" class="social-link">▶️</a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#about">Sobre Nós</a></li>
+                    <li><a href="#testimonials">Depoimentos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Pizzas Populares</h4>
+                <ul>
+                    <li><a href="#">Margherita</a></li>
+                    <li><a href="#">Calabresa</a></li>
+                    <li><a href="#">Pepperoni</a></li>
+                    <li><a href="#">4 Queijos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Horário</h4>
+                <ul>
+                    <li>Seg - Sex: 18h - 23h</li>
+                    <li>Sáb e Dom: 17h - 00h</li>
+                    <li style="margin-top: 1rem;">📞 (11) 9999-9999</li>
+                    <li>📧 contato@pizzamaster.com</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024 PizzaMaster. Todos os direitos reservados. Feito com ❤️ e 🍕</p>
+        </div>
+    </footer>
+
+    <!-- CART SIDEBAR (hidden by default) -->
+    <div id="cart-sidebar" style="display: none; position: fixed; right: 0; top: 0; width: 350px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 9999; padding: 2rem;">
+        <h3>🛒 Seu Carrinho</h3>
+        <div id="cart-items" style="margin-top: 1rem;"></div>
+        <hr style="margin: 1rem 0;">
+        <p><strong>Total: R$ <span id="cart-total">0.00</span></strong></p>
+        <button onclick="checkout()" class="btn-primary" style="width: 100%; margin-top: 1rem;">Finalizar Pedido</button>
+
+        <button onclick="closeCart()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #eee; border: none; cursor: pointer; border-radius: 8px;">Fechar</button>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ========== LOADER ==========
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1500);
+        });
+
+        // ========== NAVBAR SCROLL ==========
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ========== SCROLL ANIMATIONS ==========
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ========== CART SYSTEM ==========
+        let cart = [];
+        let cartTotal = 0;
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            cartTotal += price;
+            updateCart();
+            showNotification(`${name} adicionada ao carrinho!`);
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartCountNav = document.getElementById('cart-count-nav');
+            const cartTotalEl = document.getElementById('cart-total');
+
+            cartItems.innerHTML = cart.map(item => `
+                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                    <span>${item.name}</span>
+                    <span>R$ ${item.price.toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            cartCountNav.textContent = cart.length;
+            cartTotalEl.textContent = cartTotal.toFixed(2);
+        }
+
+        function showNotification(message) {
+            const notif = document.createElement('div');
+            notif.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 1rem 2rem; border-radius: 8px; z-index: 9999; animation: slideIn 0.3s ease;';
+            notif.textContent = message;
+            document.body.appendChild(notif);
+
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        function openCart() {
+            document.getElementById('cart-sidebar').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cart-sidebar').style.display = 'none';
+        }
+
+        // ========== CATEGORY FILTER ==========
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                document.querySelectorAll('.pizza-card').forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ========== MOBILE MENU ==========
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // ========== ADD KEYFRAMES FOR NOTIFICATION ==========
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ========== PARALLAX EFFECT ON HERO ==========
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const heroImage = document.querySelector('.pizza-display');
+            if (heroImage) {
+                heroImage.style.transform = `translateY(${scrolled * 0.2}px)`;
+            }
+        });
+
+        // ========== COUNTER ANIMATION ==========
+        function animateCounter(element, target) {
+            let count = 0;
+            const increment = Math.ceil(target / 50);
+            const timer = setInterval(() => {
+                count += increment;
+                if (count >= target) {
+                    count = target;
+                    clearInterval(timer);
+                }
+                element.textContent = count + '+';
+            }, 30);
+        }
+
+        // ========== AUTH STATE MANAGEMENT ==========
+        function updateNavbarAuth() {
+            const container = document.getElementById('nav-auth-container');
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (token && user) {
+                container.innerHTML = `
+                    <div class="user-menu-nav" style="display: flex; align-items: center; gap: 1rem; margin-left: 1rem;">
+                        <span style="color: white; font-weight: 500; font-size: 0.9rem;">Olá, ${user.nome.split(' ')[0]}!</span>
+                        <a href="/pedidos" class="nav-btn" style="background: var(--secondary) !important; color: var(--dark) !important; font-size: 0.85rem; padding: 0.4rem 1rem !important;">Meus Pedidos</a>
+                        ${user.admin ? `<a href="/admin" class="nav-link" style="color: var(--secondary); font-size: 0.9rem; font-weight: 600; text-decoration: none;">Admin</a>` : ''}
+                        <button onclick="logout()" style="background: transparent; border: 1px solid var(--primary); color: white; padding: 0.4rem 1rem; border-radius: 50px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s ease;">Sair</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <a href="/login" class="nav-btn" style="background: var(--secondary) !important; color: var(--dark) !important;">Entrar</a>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
+
+        // Call auth check on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavbarAuth();
+        });
+
+        // ========== CHECKOUT FUNCTION ==========
+        async function checkout() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            if (!token || !user) {
+                alert('Você precisa fazer login para finalizar o pedido. Redirecionando...');
+                window.location.href = '/login';
+                return;
+            }
+
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio! Adicione pizzas antes de finalizar.');
+                return;
+            }
+
+            const checkoutBtn = document.querySelector('#cart-sidebar button.btn-primary');
+            checkoutBtn.disabled = true;
+            checkoutBtn.textContent = 'Enviando...';
+
+            try {
+                // 1. Criar o pedido (inicializado como PENDENTE)
+                const orderResponse = await fetch('/pedidos/pedidos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ id_usuario: user.id })
+                });
+
+                const orderData = await orderResponse.json();
+                
+                if (!orderResponse.ok) {
+                    throw new Error(orderData.detail || 'Erro ao iniciar o pedido.');
+                }
+
+                const pedidoId = orderData.pedido_id;
+
+                // 2. Agrupar itens do carrinho por sabor
+                const groupedCart = {};
+                cart.forEach(item => {
+                    if (groupedCart[item.name]) {
+                        groupedCart[item.name].quantidade += 1;
+                    } else {
+                        groupedCart[item.name] = {
+                            quantidade: 1,
+                            sabor: item.name,
+                            tamanho: "Média",
+                            preco_unitario: item.price
+                        };
+                    }
+                });
+
+                const itemsList = Object.values(groupedCart);
+
+                // 3. Adicionar cada item ao pedido no backend
+                for (const item of itemsList) {
+                    const itemResponse = await fetch(`/pedidos/pedido/adicionar-item/${pedidoId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(item)
+                    });
+
+                    if (!itemResponse.ok) {
+                        const itemData = await itemResponse.json();
+                        throw new Error(itemData.detail || 'Erro ao adicionar os itens ao pedido.');
+                    }
+                }
+
+                alert('Pedido realizado com sucesso! Acompanhe a entrega na sua tela de pedidos.');
+                
+                // Limpar o carrinho
+                cart = [];
+                cartTotal = 0;
+                updateCart();
+                closeCart();
+
+                // Redirecionar para o histórico de pedidos
+                window.location.href = '/pedidos';
+
+            } catch (error) {
+                alert(error.message);
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'Finalizar Pedido';
+            }
+        }
+
+        // ========== INITIALIZE ==========
+        console.log('🍕 PizzaMaster carregado com sucesso!');
+    </script>
+
+</body>
+</html>

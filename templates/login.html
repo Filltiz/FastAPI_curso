@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaMaster - Login & Cadastro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D62626;
+            --primary-dark: #B51D1D;
+            --secondary: #F4A307;
+            --dark: #1A1A1A;
+            --cream: #FFF8ED;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --light-gray: #F3F4F6;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== LOGO HEADER ========== */
+        .brand-header {
+            background: var(--dark);
+            padding: 2.5rem 2rem 2rem;
+            text-align: center;
+            color: var(--white);
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .brand-logo {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            animation: rotatePizza 5s linear infinite;
+        }
+
+        @keyframes rotatePizza {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .brand-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .brand-header h2 span {
+            color: var(--secondary);
+        }
+
+        .brand-header p {
+            color: #B0B0B0;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        /* ========== TABS ========== */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(214, 38, 38, 0.02);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--dark);
+            background: var(--light-gray);
+        }
+
+        /* ========== FORM WRAPPER ========== */
+        .form-container {
+            padding: 2rem;
+        }
+
+        .form-pane {
+            display: none;
+        }
+
+        .form-pane.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(214, 38, 38, 0.15);
+        }
+
+        /* ========== ALERTS ========== */
+        .alert {
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert-error {
+            background-color: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .alert-success {
+            background-color: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #6EE7B7;
+        }
+
+        /* ========== BUTTONS ========== */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(214, 38, 38, 0.2);
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(214, 38, 38, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        /* Checkbox option */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .checkbox-group input {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="brand-header">
+            <span class="brand-logo">🍕</span>
+            <h2>Pizza<span>Master</span></h2>
+            <p>Faça seu login para realizar pedidos</p>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Entrar</button>
+            <button class="tab-btn" onclick="switchTab('register')">Cadastrar</button>
+        </div>
+
+        <!-- FORM CONTAINER -->
+        <div class="form-container">
+            <!-- Alert Box -->
+            <div id="alert-box" class="alert"></div>
+
+            <!-- LOGIN FORM -->
+            <div id="login-pane" class="form-pane active">
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" required placeholder="seuemail@exemplo.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" required placeholder="Sua senha secreta">
+                    </div>
+                    <button type="submit" class="submit-btn">Entrar</button>
+                </form>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div id="register-pane" class="form-pane">
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="reg-name">Nome Completo</label>
+                        <input type="text" id="reg-name" required placeholder="Digite seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">E-mail</label>
+                        <input type="email" id="reg-email" required placeholder="seuemail@exemplo.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Senha</label>
+                        <input type="password" id="reg-password" required placeholder="Crie uma senha forte (mín. 4 caract.)">
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="reg-admin">
+                        <label for="reg-admin">Registrar como Administrador (Admin)</label>
+                    </div>
+                    <button type="submit" class="submit-btn">Criar Conta</button>
+                </form>
+            </div>
+
+            <!-- VOLTAR -->
+            <a href="/" class="back-link">← Voltar para a Página Inicial</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if already logged in, redirect home
+        if (localStorage.getItem('token')) {
+            window.location.href = '/';
+        }
+
+        // Switch Tabs
+        function switchTab(tab) {
+            const loginPane = document.getElementById('login-pane');
+            const registerPane = document.getElementById('register-pane');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const alertBox = document.getElementById('alert-box');
+
+            // Hide alert
+            alertBox.style.display = 'none';
+
+            if (tab === 'login') {
+                loginPane.classList.add('active');
+                registerPane.classList.remove('active');
+                tabBtns[0].classList.add('active');
+                tabBtns[1].classList.remove('active');
+            } else {
+                loginPane.classList.remove('active');
+                registerPane.classList.add('active');
+                tabBtns[0].classList.remove('active');
+                tabBtns[1].classList.add('active');
+            }
+        }
+
+        // Display Alert Messages
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.textContent = message;
+            alertBox.className = 'alert ' + (type === 'error' ? 'alert-error' : 'alert-success');
+            alertBox.style.display = 'block';
+        }
+
+        // Handle Login Submission
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const senha = document.getElementById('login-password').value;
+            const alertBox = document.getElementById('alert-box');
+
+            alertBox.style.display = 'none';
+
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, senha })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Erro ao realizar login. Verifique suas credenciais.');
+                }
+
+                // Save JWT Token
+                localStorage.setItem('token', data.access_token);
+
+                // Fetch details of user to store admin status and name
+                const meResponse = await fetch('/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${data.access_token}`
+                    }
+                });
+
+                if (meResponse.ok) {
+                    const userData = await meResponse.json();
+                    localStorage.setItem('user', JSON.stringify(userData));
+                }
+
+                showAlert('Login efetuado com sucesso! Redirecionando...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+
+            } catch (error) {
+                showAlert(error.message);
+            }
+        }
+
+        // Handle Register Submission
+        async function handleRegister(event) {
+            event.preventDefault();
+            const nome = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const senha = document.getElementById('reg-password').value;
+            const admin = document.getElementById('reg-admin').checked;
+            const alertBox = document.getElementById('alert-box');
+
+            alertBox.style.display = 'none';
+
+            try {
+                const response = await fetch('/auth/criar_conta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nome,
+                        email,
+                        senha,
+                        ativo: true,
+                        admin
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Erro ao registrar usuário. Tente outro e-mail.');
+                }
+
+                showAlert('Conta criada com sucesso! Faça login abaixo.', 'success');
+                
+                // Reset form and switch tab to login
+                document.getElementById('register-form').reset();
+                setTimeout(() => {
+                    switchTab('login');
+                    document.getElementById('login-email').value = email;
+                }, 1500);
+
+            } catch (error) {
+                showAlert(error.message);
+            }
+        }
+    </script>
+</body>
+</html>

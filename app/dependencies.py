@@ -1,8 +1,7 @@
 from fastapi import Depends, HTTPException
-from main import SECRET_KEY, ALGORITHM, oauth2_scheme
-from models import db
+from app.main import SECRET_KEY, ALGORITHM, oauth2_scheme
+from app.models import db, Usuario
 from sqlalchemy.orm import sessionmaker, Session
-from models import Usuario
 from jose import jwt, JWTError
 
 

@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 
-from models import Usuario
-from dependencies import pegar_sessao, verificar_token
-from main import bcrypt_context, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
-from schemas import UsuarioSchema, LoginSchema
+from app.models import Usuario
+from app.dependencies import pegar_sessao, verificar_token
+from app.main import bcrypt_context, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
+from app.schemas import UsuarioSchema, LoginSchema
 from sqlalchemy.orm import Session
-from jose import jwt, JWTError
+from jose import jwt
 from datetime import datetime, timedelta, timezone
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
@@ -86,4 +86,15 @@ async def use_refresh_token(usuario: Usuario = Depends(verificar_token)):
         "access_token": access_token,
         "refresh_token": "Bearer"
     }
+
+
+@auth_router.get("/me")
+async def obter_usuario_atual(usuario: Usuario = Depends(verificar_token)):
+    return {
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "admin": usuario.admin
+    }
+
 

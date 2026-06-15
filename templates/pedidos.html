@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaMaster - Meus Pedidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D62626;
+            --primary-dark: #B51D1D;
+            --secondary: #F4A307;
+            --dark: #1A1A1A;
+            --cream: #FFF8ED;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --light-gray: #F3F4F6;
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream);
+            color: var(--dark);
+            min-height: 100vh;
+            padding-bottom: 4rem;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            background: var(--dark);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #B0B0B0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid #B51D1D;
+            color: #FF5A5A;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .logout-btn:hover {
+            background: #B51D1D;
+            color: white;
+        }
+
+        /* ========== CONTENT CONTAINER ========== */
+        .container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-section h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .header-section h1 span {
+            color: var(--primary);
+        }
+
+        .user-welcome {
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+
+        /* ========== ORDERS LIST ========== */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .order-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .order-id {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-pendente {
+            background-color: #FEF3C7;
+            color: #D97706;
+        }
+
+        .badge-finalizado {
+            background-color: #D1FAE5;
+            color: #059669;
+        }
+
+        .badge-cancelado {
+            background-color: #FEE2E2;
+            color: #DC2626;
+        }
+
+        /* Order Items */
+        .order-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: #4B5563;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+
+        .item-price {
+            font-weight: 600;
+        }
+
+        /* Order Footer */
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 1rem;
+        }
+
+        .order-total {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .cancel-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .cancel-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(214, 38, 38, 0.2);
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-order {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-order:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(214, 38, 38, 0.3);
+        }
+
+        /* Notification */
+        #notification-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            z-index: 9999;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="/" class="nav-logo">
+            <span>🍕</span> PizzaMaster
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Página Inicial</a>
+            <span id="nav-user-name" style="font-weight: 600; border-right: 1px solid #444; padding-right: 1rem;">Carregando...</span>
+            <button class="logout-btn" onclick="handleLogout()">Sair</button>
+        </div>
+    </nav>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header-section">
+            <div>
+                <h1>Meus <span>Pedidos</span></h1>
+                <p class="user-welcome" id="welcome-text">Histórico de compras e acompanhamento</p>
+            </div>
+            <a href="/#menu" class="btn-order">Fazer Novo Pedido</a>
+        </div>
+
+        <!-- ORDERS LIST -->
+        <div id="orders-container" class="orders-list">
+            <!-- Loading placeholder -->
+            <div style="text-align: center; padding: 3rem;">
+                <p>Carregando seus pedidos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification-box"></div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        // Show toast notification
+        function showNotification(message, success = true) {
+            const notif = document.getElementById('notification-box');
+            notif.textContent = message;
+            notif.style.backgroundColor = success ? '#059669' : '#DC2626';
+            notif.style.display = 'block';
+            setTimeout(() => {
+                notif.style.display = 'none';
+            }, 3000);
+        }
+
+        // Handle Logout
+        function handleLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        }
+
+        // Fetch User and Orders on load
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Get User Profile
+                const userRes = await fetch('/auth/me', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!userRes.ok) {
+                    throw new Error('Token expirado');
+                }
+
+                const user = await userRes.json();
+                document.getElementById('nav-user-name').textContent = user.nome;
+                document.getElementById('welcome-text').textContent = `Olá, ${user.nome.split(' ')[0]}! Veja o status dos seus pedidos abaixo:`;
+
+                // If user is Admin, we can optionally show an "Admin Dashboard" link
+                if (user.admin) {
+                    const adminLink = document.createElement('a');
+                    adminLink.href = '/admin';
+                    adminLink.className = 'nav-link';
+                    adminLink.style.color = 'var(--secondary)';
+                    adminLink.style.fontWeight = 'bold';
+                    adminLink.textContent = '🛠️ Painel Admin';
+                    const navLinks = document.querySelector('.nav-links');
+                    navLinks.insertBefore(adminLink, document.getElementById('nav-user-name'));
+                }
+
+                // Load Orders
+                await loadOrders();
+
+            } catch (error) {
+                console.error(error);
+                handleLogout();
+            }
+        });
+
+        // Load Orders list
+        async function loadOrders() {
+            const container = document.getElementById('orders-container');
+            
+            try {
+                const ordersRes = await fetch('/pedidos/listar/pedidos-usuario', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!ordersRes.ok) {
+                    throw new Error('Falha ao obter pedidos');
+                }
+
+                const pedidos = await ordersRes.json();
+
+                if (pedidos.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">🍕</div>
+                            <h3>Nenhum pedido realizado</h3>
+                            <p>Você ainda não realizou pedidos no PizzaMaster. Que tal pedir uma deliciosa pizza agora?</p>
+                            <a href="/#menu" class="btn-order">Ver Menu</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Render list
+                container.innerHTML = pedidos.map(pedido => {
+                    const statusClass = `badge-${pedido.status.toLowerCase()}`;
+                    const itemsHtml = pedido.itens.map(item => `
+                        <div class="item-row">
+                            <span class="item-name">${item.quantidade}x ${item.sabor} (${item.tamanho})</span>
+                            <span class="item-price">R$ ${(item.preco_unitario * item.quantidade).toFixed(2)}</span>
+                        </div>
+                    `).join('');
+
+                    // Cancel button only for PENDENTE status
+                    const actionButton = pedido.status === 'PENDENTE' 
+                        ? `<button class="cancel-btn" onclick="cancelOrder(${pedido.id})">Cancelar Pedido</button>`
+                        : '';
+
+                    return `
+                        <div class="order-card" style="border-left-color: ${pedido.status === 'CANCELADO' ? '#DC2626' : (pedido.status === 'FINALIZADO' ? '#059669' : '#F4A307')}">
+                            <div class="order-header">
+                                <span class="order-id">Pedido #${pedido.id}</span>
+                                <span class="badge ${statusClass}">${pedido.status}</span>
+                            </div>
+                            <div class="order-items">
+                                ${itemsHtml || '<div class="item-row">Nenhum item adicionado</div>'}
+                            </div>
+                            <div class="order-footer">
+                                <div class="order-total">Total: R$ ${pedido.preco.toFixed(2)}</div>
+                                ${actionButton}
+                            </div>
+                        </div>
+                    `;
+                }).reverse().join(''); // Show newest first
+
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">❌</div>
+                        <h3>Erro ao carregar</h3>
+                        <p>Não foi possível buscar seus pedidos. Tente novamente mais tarde.</p>
+                        <button onclick="loadOrders()" class="btn-order" style="border:none; cursor:pointer;">Tentar Novamente</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Cancel order API call
+        async function cancelOrder(pedidoId) {
+            if (!confirm('Deseja realmente cancelar este pedido?')) return;
+
+            try {
+                const response = await fetch(`/pedidos/pedidos/cancelar/${pedidoId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Erro ao cancelar o pedido');
+                }
+
+                showNotification('Pedido cancelado com sucesso!');
+                await loadOrders();
+
+            } catch (error) {
+                showNotification(error.message, false);
+            }
+        }
+    </script>
+</body>
+</html>
